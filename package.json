@@ -1,0 +1,12 @@
+{
+  "name": "osc-contactform",
+  "version": "1.0.0",
+  "description": "Omaha Symphonic Chorus website contact form handler",
+  "main": "index.js",
+  "repository": "https://github.com/omahasymphonicchorus/serverless-contactform.git",
+  "author": "Nick Meyer",
+  "license": "MIT",
+  "dependencies": {
+    "serverless": "^1.30.3"
+  }
+}
