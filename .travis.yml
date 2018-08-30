@@ -6,3 +6,5 @@ deploy:
   script: yarn sls deploy
   on:
     branch: master
+  skip_cleanup: true
+  
