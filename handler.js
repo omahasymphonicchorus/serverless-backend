@@ -78,7 +78,7 @@ module.exports.contactform = async (event, context) => {
 
   // send the email
   result = await sendEmail(formData).then(res => {
-    ret.body = res;
+    ret.body = JSON.stringify(res);
   }).catch(err => {
     ret.statusCode = err.statusCode
     ret.body = JSON.stringify(err);
