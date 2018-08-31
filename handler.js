@@ -54,9 +54,9 @@ module.exports.contactform = async (event, context) => {
     result = await request.post(opts)
     if(!result.success) {
       return {
-        statusCode: 200,
+        statusCode: 403,
         headers: {
-          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Origin': '*'
         },
         body: JSON.stringify({
           error: {
@@ -71,7 +71,7 @@ module.exports.contactform = async (event, context) => {
   const ret = {
     statusCode: 200,
     headers: {
-      'Access-Control-Allow-Origin': process.env.DOMAIN
+      'Access-Control-Allow-Origin': '*'
     },
     body: ""
   }
