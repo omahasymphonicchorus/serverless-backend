@@ -71,7 +71,7 @@ module.exports.contactform = async (event, context) => {
   const ret = {
     statusCode: 200,
     headers: {
-      'Access-Control-Allow-Origin': '*'
+      'Access-Control-Allow-Origin': process.env.DOMAIN
     },
     body: ""
   }

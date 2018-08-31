@@ -69,6 +69,7 @@ functions:
           cors: true
     environment:
       RECAPTCHA_SECRET: ${ssm:oscReCaptchaSecret}
+      DOMAIN: omahasymphonicchorus.github.io
       SRC_ADDRESS: nickmeyer07@gmail.com
       DEST_ADDRESS: nickmeyer07@gmail.com
 
