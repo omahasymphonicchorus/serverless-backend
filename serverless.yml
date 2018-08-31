@@ -69,6 +69,9 @@ functions:
           cors: true
     environment:
       RECAPTCHA_SECRET: ${ssm:oscReCaptchaSecret}
+      SRC_ADDRESS: nickmeyer07@gmail.com
+      DEST_ADDRESS: nickmeyer07@gmail.com
+
           
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
