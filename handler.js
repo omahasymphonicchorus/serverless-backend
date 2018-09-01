@@ -33,13 +33,23 @@ Message: ${formData.note}`
   return SES.sendEmail(emailParams).promise();
 }
 
-module.exports.contactform = async (event, context) => {  
+module.exports.processdonation = async (event, context) => {
+  return {
+    statusCode: 200,
+    body: JSON.stringify({
+      message: "Go Serverless v1.0! Your function executed successfully!",
+      input: event
+    })
+  };
+}
+
+module.exports.contactform = async (event, context) => {
   // parse the form data
   const formData = JSON.parse(event.body);
   let result = undefined;
 
-  if(context.invokeid != 'id') { // test, do not recaptcha
-  // build the options for the reCaptcha validation request
+  if (context.invokeid != 'id') { // test, do not recaptcha
+    // build the options for the reCaptcha validation request
     const opts = {
       method: 'POST',
       uri: 'https://www.google.com/recaptcha/api/siteverify',
@@ -49,10 +59,10 @@ module.exports.contactform = async (event, context) => {
       },
       json: true
     }
-    
+
     // send the request and handle appropriately
     result = await request.post(opts)
-    if(!result.success) {
+    if (!result.success) {
       return {
         statusCode: 403,
         headers: {
@@ -83,7 +93,7 @@ module.exports.contactform = async (event, context) => {
     ret.statusCode = err.statusCode
     ret.body = JSON.stringify(err);
   });
-  
+
   return ret;
 
   // Use this code if you don't use the http event with the LAMBDA-PROXY integration

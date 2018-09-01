@@ -1,18 +1,22 @@
 {
-  "name": "osc-contactform",
+  "name": "osc-serverless",
   "version": "1.0.0",
-  "description": "Omaha Symphonic Chorus website contact form handler",
+  "description": "Omaha Symphonic Chorus website backend functions",
   "main": "index.js",
-  "repository": "https://github.com/omahasymphonicchorus/serverless-contactform.git",
+  "repository": "https://github.com/omahasymphonicchorus/serverless-backend.git",
   "author": "Nick Meyer",
   "license": "MIT",
   "dependencies": {
     "aws-sdk": "^2.306.0",
     "request": "^2.88.0",
-    "request-promise-native": "^1.0.5",
-    "serverless": "^1.30.3"
+    "request-promise-native": "^1.0.5"
   },
   "scripts": {
     "test": "echo \"No tests yet\""
+  },
+  "devDependencies": {
+    "eslint-plugin-prettier": "^2.6.2",
+    "prettier": "^1.14.2",
+    "serverless": "^1.30.3"
   }
 }

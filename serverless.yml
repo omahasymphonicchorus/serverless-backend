@@ -11,7 +11,7 @@
 #
 # Happy Coding!
 
-service: osc-contactform # NOTE: update this with your service name
+service: osc-serverless # NOTE: update this with your service name
 
 # You can pin your service to only deploy with a specific Serverless version
 # Check out our docs for more details
@@ -20,6 +20,7 @@ service: osc-contactform # NOTE: update this with your service name
 provider:
   name: aws
   runtime: nodejs8.10
+  profile: osc
   iamRoleStatements:
   - Effect: "Allow"
     Action:
@@ -72,7 +73,13 @@ functions:
       DOMAIN: omahasymphonicchorus.github.io
       SRC_ADDRESS: nickmeyer07@gmail.com
       DEST_ADDRESS: nickmeyer07@gmail.com
-
+  processdonation:
+    handler: handler.processdonation
+    events:
+      - http:
+          method: post
+          path: process-donation
+          cors: true
           
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
