@@ -2,7 +2,7 @@ language: node_js
 node_js: 8
 cache: yarn
 before_script:
-  - yarn sls config credentials -p aws -k ${AWS_ACCESS_KEY_ID} -s ${AWS_SECRET_ACCESS_KEY} -n osc
+  - echo "[osc]\naws_access_key_id=${AWS_ACCESS_KEY_ID}\naws_secret_access_key=${AWS_SECRET_ACCESS_KEY}\nregion=us-east-1" > ~/.aws/credentials
 deploy:
   provider: script
   script: yarn sls deploy
