@@ -1,6 +1,9 @@
 language: node_js
 node_js: 8
 cache: yarn
+branches:
+  only:
+    master
 deploy:
   provider: script
   script: yarn sls deploy
