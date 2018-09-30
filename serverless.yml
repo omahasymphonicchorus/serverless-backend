@@ -59,6 +59,15 @@ provider:
 #    - exclude-me.js
 #    - exclude-me-dir/**
 
+
+plugins:
+  - serverless-domain-manager
+custom:
+  customDomain:
+    domainName: sls.omahasymphonicchorus.org
+    basePath: ''
+    stage: ${self:provider.stage}
+
 functions:
   contactform:
     handler: handler.contactform
