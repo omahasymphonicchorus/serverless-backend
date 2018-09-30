@@ -43,9 +43,8 @@ module.exports.processdonation = async (event, context) => {
   };
 }
 
-module.exports.contactform = async (event, context) => {
+module.exports.contactform = async (formData, context) => {
   // parse the form data
-  const formData = JSON.parse(event.body);
   let result = undefined;
 
   if (context.invokeid != 'id') { // test, do not recaptcha
