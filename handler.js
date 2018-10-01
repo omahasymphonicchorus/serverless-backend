@@ -1,7 +1,9 @@
 "use strict";
 
 const request = require("request-promise-native");
+const square = require("square-connect");
 const AWS = require("aws-sdk");
+const uuid = require("uuid/v4");
 
 AWS.config.setPromisesDependency(null);
 const SES = new AWS.SES();
@@ -35,13 +37,62 @@ Message: ${formData.note}`
 }
 
 module.exports.processdonation = async (event, context) => {
-  return {
-    statusCode: 200,
-    body: JSON.stringify({
-      message: "Go Serverless v1.0! Your function executed successfully!",
-      input: event
-    })
+  const body = JSON.parse(event.body);
+  let amount = parseFloat(body.amount);
+  if (isNaN(amount)) {
+    return {
+      statusCode: 400,
+      headers: {
+        "Access-Control-Allow-Origin": "*"
+      },
+      body: JSON.stringify({
+        error: {
+          code: 400,
+          message: "Invalid amount: " + amount
+        }
+      })
+    };
+  }
+
+  const trxID = uuid();
+
+  const defaultClient = square.ApiClient.instance;
+  const oauth2 = defaultClient.authentications["oauth2"];
+  oauth2.accessToken = process.env.SQUARE_ACCESS_TOKEN;
+
+  const api = new square.TransactionsApi();
+  const chargeRequest = new square.ChargeRequest(trxID, {
+    amount: Math.round(amount * 100),
+    currency: "USD"
+  });
+  (chargeRequest.card_nonce = body.nonce),
+    (chargeRequest.billing_address = new square.Address({
+      address_line_1: body.street,
+      locality: body.city,
+      administrative_district_level_1: body.state,
+      postal_code: body.zip,
+      country: "US"
+    })),
+    (chargeRequest.buyer_email_address = body.email);
+
+  console.log(chargeRequest);
+
+  let result = {
+    headers: {
+      "Access-Control-Allow-Origin": "*"
+    }
   };
+
+  try {
+    let resp = await api.charge(process.env.LOCATION_ID, chargeRequest);
+    result.body = JSON.stringify(resp);
+    result.statusCode = 200;
+  } catch (err) {
+    result.body = JSON.stringify(err);
+    result.statusCode = 400;
+  } finally {
+    return result;
+  }
 };
 
 module.exports.contactform = async (event, context) => {
