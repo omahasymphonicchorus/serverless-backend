@@ -91,6 +91,8 @@ functions:
           path: process-donation
           cors: true
     environment:
+      SRC_ADDRESS: donate@omahasymphonicchorus.org
+      DEST_ADDRESS: nickmeyer07@gmail.com
       SQUARE_ACCESS_TOKEN: ${ssm:SquareSandboxAccessToken}
       LOCATION_ID: ${ssm:SquareSandboxLocationID}
           

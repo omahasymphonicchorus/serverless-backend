@@ -9,7 +9,6 @@ AWS.config.setPromisesDependency(null);
 const SES = new AWS.SES();
 
 function sendEmail(formData) {
-  console.log(formData);
   const emailParams = {
     Source: process.env.SRC_ADDRESS,
     ReplyToAddresses: [formData.email],
@@ -65,17 +64,15 @@ module.exports.processdonation = async (event, context) => {
     amount: Math.round(amount * 100),
     currency: "USD"
   });
-  (chargeRequest.card_nonce = body.nonce),
-    (chargeRequest.billing_address = new square.Address({
-      address_line_1: body.street,
-      locality: body.city,
-      administrative_district_level_1: body.state,
-      postal_code: body.zip,
-      country: "US"
-    })),
-    (chargeRequest.buyer_email_address = body.email);
-
-  console.log(chargeRequest);
+  chargeRequest.card_nonce = body.nonce;
+  chargeRequest.billing_address = new square.Address({
+    address_line_1: body.street,
+    locality: body.city,
+    administrative_district_level_1: body.state,
+    postal_code: body.zip,
+    country: "US"
+  });
+  chargeRequest.buyer_email_address = body.email;
 
   let result = {
     headers: {
@@ -87,6 +84,33 @@ module.exports.processdonation = async (event, context) => {
     let resp = await api.charge(process.env.LOCATION_ID, chargeRequest);
     result.body = JSON.stringify(resp);
     result.statusCode = 200;
+
+    await SES.sendEmail({
+      Source: process.env.SRC_ADDRESS,
+      ReplyToAddresses: [],
+      Destination: {
+        ToAddresses: [process.env.DEST_ADDRESS]
+      },
+      Message: {
+        Body: {
+          Text: {
+            Charset: "UTF-8",
+            Data: `Amount: ${body.amount}
+            
+Name: ${body.name}
+Email: ${body.email}
+Address: ${body.street}
+         ${body.city}, ${body.state} ${body.zip}
+Phone: ${body.phone}
+Note: ${body.note}`
+          }
+        },
+        Subject: {
+          Charset: "UTF-8",
+          Data: "OSC donation processed"
+        }
+      }
+    }).promise();
   } catch (err) {
     result.body = JSON.stringify(err);
     result.statusCode = 400;
