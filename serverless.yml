@@ -80,9 +80,8 @@ functions:
           cors: true
     environment:
       RECAPTCHA_SECRET: ${ssm:oscReCaptchaSecret}
-      DOMAIN: omahasymphonicchorus.github.io
-      SRC_ADDRESS: nickmeyer07@gmail.com
-      DEST_ADDRESS: nickmeyer07@gmail.com
+      SRC_ADDRESS: contact@omahasymphonicchorus.org
+      DEST_ADDRESS: contact@omahasymphonicchorus.org
   processdonation:
     handler: handler.processdonation
     events:
@@ -92,9 +91,9 @@ functions:
           cors: true
     environment:
       SRC_ADDRESS: donate@omahasymphonicchorus.org
-      DEST_ADDRESS: nickmeyer07@gmail.com
-      SQUARE_ACCESS_TOKEN: ${ssm:SquareSandboxAccessToken}
-      LOCATION_ID: ${ssm:SquareSandboxLocationID}
+      DEST_ADDRESS: donate@omahasymphonicchorus.org
+      SQUARE_ACCESS_TOKEN: ${ssm:SquareOSCAccessToken}
+      LOCATION_ID: ${ssm:SquareOSCLocationID}
           
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
